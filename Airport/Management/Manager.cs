@@ -21,7 +21,7 @@ namespace Airport.Management
         public void Start()
         { 
             Employee = new Employee("red");
-            Plane = new PassangerPlane(123);
+            Plane = new PassangerPlane(new Random().Next(1, 9));
             Plane.Landed += AfterLanding;
             Plane.OutAir += OutAir;
             Plane.Image.Parent = Form.GetRunway();

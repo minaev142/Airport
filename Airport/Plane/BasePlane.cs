@@ -32,9 +32,12 @@ namespace Airport.Plane
             State = StateEnum.InAir;
 
             NumberLabel = new Label();
+            NumberLabel.BackColor = Color.Transparent;
+            NumberLabel.ForeColor = Color.White;
+            NumberLabel.Location = new Point(17, 10);
             NumberLabel.Text = number.ToString();
             NumberLabel.Visible = true;
-            //NumberLabel.Parent = Image;
+            NumberLabel.Parent = Image;
 
             maxX = 391;
             maxY = 40;
