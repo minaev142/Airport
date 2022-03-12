@@ -20,8 +20,7 @@ namespace Airport.Management
             Color = color;
             Image = new PictureBox();
             Image.Location = new Point(0, 27);
-            Image.Image = Properties.Resources.employee_blue;
-            //Image.Image = (Image)Properties.Resources.ResourceManager.GetObject($"employee_{color}");
+            Image.Image = (Image)Properties.Resources.ResourceManager.GetObject($"employee_{color}");
             Image.Visible = false;
             Image.Enabled = false;
             Image.BackColor = System.Drawing.Color.Transparent;
@@ -32,11 +31,11 @@ namespace Airport.Management
             if (plane.State != StateEnum.WaitAfterLand)
                 return false;
 
-            Image.Parent = plane.Image;
-            Image.Visible = true;
-            Image.Enabled = true;
 
             WorkStarted?.Invoke();
+            Image.Parent = plane.SupportImage;
+            Image.Visible = true;
+            Image.Enabled = true;
 
             plane.Unload();
             plane.Fix();

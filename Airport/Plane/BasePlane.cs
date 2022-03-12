@@ -14,27 +14,31 @@ namespace Airport.Plane
         public event PlaneHandler OutAir;
         public event PlaneHandler Landed;
 
-        private Label NumberLabel;
-        private int maxX;
-        private int maxY;
         private int xMoveIntervalTimer;
-        private int xMoveInterval;
         private int yMoveIntervalTimer;
-        private int yMoveInterval;
         private int dx;
         private int dy;
+
+        protected Label NumberLabel;
+
+        protected int maxX;
+        protected int maxY;
+        protected int xMoveInterval;
+        protected int yMoveInterval;
 
         public BasePlane(int number, PictureBox image)
         {
             Number = number;
             Image = image;
 
+            Image.BackColor = Color.Transparent;
+            Image.Size = new Size(100, 50);
+
             State = StateEnum.InAir;
 
             NumberLabel = new Label();
             NumberLabel.BackColor = Color.Transparent;
             NumberLabel.ForeColor = Color.White;
-            NumberLabel.Location = new Point(17, 10);
             NumberLabel.Text = number.ToString();
             NumberLabel.Visible = true;
             NumberLabel.Parent = Image;
@@ -42,17 +46,22 @@ namespace Airport.Plane
             maxX = 391;
             maxY = 40;
             xMoveIntervalTimer = 0;
-            xMoveInterval = 1;
             yMoveIntervalTimer = 0;
-            yMoveInterval = 3;
             dx = 0;
             dy = 0;
 
-
+            SupportImage = new PictureBox();
+            SupportImage.Parent = Image;
+            SupportImage.Location = new Point(0, 0);
+            SupportImage.Size = new Size(100, 50);
+            SupportImage.Visible = true;
+            SupportImage.Enabled = true;
+            SupportImage.BackColor = Color.Transparent;
         }
 
         public int Number { get; private set; }
         public PictureBox Image { get; set; }
+        public PictureBox SupportImage { get; set; }
         public StateEnum State { get; private set; }
 
         private Employee employee;
@@ -63,19 +72,20 @@ namespace Airport.Plane
             {
                 employee = value;
 
-                Employee.Image.Parent = Image;
-
-                Employee.WorkEnded += StartTakesOff;
-                Employee.WorkStarted += StartUnloading;
+                employee.WorkEnded += StartTakesOff;
+                employee.WorkStarted += StartUnloading;
             } 
         }
 
         public abstract void Unload();
         public abstract void Fix();
 
-        public void StartLanding() 
+        protected Bitmap Wheels { get; set; }
+
+        public virtual void StartLanding() 
         {
             State = StateEnum.Landing;
+            SupportImage.Image = Wheels;
 
             var timer = new Timer();
             timer.Tick += (object sender, EventArgs e) =>
@@ -91,17 +101,18 @@ namespace Airport.Plane
             timer.Enabled = true;
         }
 
-        public void StartUnloading() 
+        public virtual void StartUnloading() 
         {
             State = StateEnum.Unloading;
         }
 
-        public void StartTakesOff()
+        public virtual void StartTakesOff()
         {
             State = StateEnum.TakesOff;
+            SupportImage.Image = Wheels;
 
             var timer = new Timer();
-            Image.Location = new Point(0, 40);
+            Image.Location = new Point(0, maxY);
             timer.Tick += (object sender, EventArgs e) =>
             {
                 timer.Enabled = PlaneMove();

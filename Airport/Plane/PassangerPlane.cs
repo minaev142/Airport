@@ -13,8 +13,19 @@ namespace Airport.Plane
 
         public PassangerPlane(int number) : base(number, new PictureBox())
         {
+            xMoveInterval = 2;
+            yMoveInterval = 6;
             PassangerCount = new Random().Next(30, 50);
             Image.Image = Properties.Resources.P1;
+            NumberLabel.Location = new Point(17, 10);
+
+            Wheels = Properties.Resources.passwheels;
+        }
+
+        public override void StartUnloading()
+        {
+            SupportImage.Image = Properties.Resources.passengerentry;
+            base.StartUnloading();
         }
 
         public override void Fix()

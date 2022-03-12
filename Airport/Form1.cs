@@ -8,7 +8,7 @@ namespace Airport
         public Form1()
         {
             InitializeComponent();
-            Manager = new Manager(this);
+            Manager = new Manager(this, new WeatherForecast());
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -17,5 +17,6 @@ namespace Airport
         }
 
         public Panel GetRunway() => RunwayPanel;
+        public PictureBox GetWeatherBox() => WeatherPicture;
     }
 }
