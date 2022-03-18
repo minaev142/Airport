@@ -15,7 +15,7 @@ namespace Airport.Plane
         {
             xMoveInterval = 2;
             yMoveInterval = 6;
-            PassangerCount = new Random().Next(30, 50);
+            PassangerCount = new Random().Next(100, 150);
             Image.Image = Properties.Resources.P1;
             NumberLabel.Location = new Point(17, 10);
 
@@ -29,28 +29,22 @@ namespace Airport.Plane
             base.StartTakesOff();
         }
 
-        public override void StartUnloading()
-        {
-            SupportImage.Image = Properties.Resources.passengerentry;
-            base.StartUnloading();
-        }
-
         public override void Fix()
         {
+            SupportImage.Image = Properties.Resources.passwheels;
+            SupportImage.Refresh();
             Thread.Sleep(3000);
         }
 
         public override void Unload()
         {
-            var timer = new Timer();
-            timer.Tick += (object sender, EventArgs e) =>
+            SupportImage.Image = Properties.Resources.passengerentry;
+            SupportImage.Refresh();
+            while (PassangerCount != 0)
             {
-                timer.Enabled = PassangerCount != 0;
-                if (!timer.Enabled)
-                    PassangerCount--;
-            };
-            timer.Interval = 1000;
-            timer.Enabled = true;
+                PassangerCount--;
+                Thread.Sleep(20);
+            }
         }
     }
 }
