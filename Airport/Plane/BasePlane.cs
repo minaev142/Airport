@@ -33,7 +33,6 @@ namespace Airport.Plane
 
             Image.BackColor = Color.Transparent;
             Image.Size = new Size(100, 50);
-
             State = StateEnum.InAir;
 
             NumberLabel = new Label();
@@ -112,7 +111,7 @@ namespace Airport.Plane
             SupportImage.Image = Wheels;
 
             var timer = new Timer();
-            Image.Location = new Point(0, maxY);
+            Image.Image.RotateFlip(RotateFlipType.Rotate180FlipY);
             timer.Tick += (object sender, EventArgs e) =>
             {
                 timer.Enabled = PlaneMove();
@@ -133,10 +132,10 @@ namespace Airport.Plane
 
             if (++xMoveIntervalTimer >= xMoveInterval)
             {
-                if (Image.Location.X + 1 <= maxX)
-                {
+                if (Image.Location.X + 1 <= maxX && State == StateEnum.Landing)
                     dx = 1;
-                }
+                else if (Image.Location.X + 1 > 0 && State == StateEnum.TakesOff)
+                    dx = -1;
                 else
                 {
                     if (State == StateEnum.TakesOff)
@@ -148,7 +147,11 @@ namespace Airport.Plane
                 xMoveIntervalTimer = 0;
             }
 
-            if (Image.Location.X >= maxX / 2 && ++yMoveIntervalTimer >= yMoveInterval)
+            var rule = State == StateEnum.Landing
+                ? Image.Location.X >= maxX / 2
+                : Image.Location.X <= maxX / 2;
+
+            if (rule && ++yMoveIntervalTimer >= yMoveInterval)
             {
                 if (State == StateEnum.TakesOff && Image.Location.Y - 1 >= 0) 
                     dy = -1;
@@ -160,7 +163,7 @@ namespace Airport.Plane
 
 
 
-            if (dx == 1 || dy == 1 || dy == -1)
+            if (dx != 0 || dy != 0)
                 Image.Location = new Point(Image.Location.X + dx, Image.Location.Y + dy);
 
             return true;

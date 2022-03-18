@@ -29,5 +29,11 @@ namespace Airport.Plane
         {
             Thread.Sleep(3000);
         }
+
+        public override void StartTakesOff()
+        {
+            NumberLabel.Location = new Point(55, 18);
+            base.StartTakesOff();
+        }
     }
 }

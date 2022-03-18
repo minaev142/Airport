@@ -38,8 +38,9 @@ namespace Airport.Management
             int index = new Random().Next(colors.Length);
             
             Employee = new Employee(colors[index]);
+            Employee.Image.Parent = Form.GetRunway();
+
             Plane = GetPlane();
-            
             Plane.Landed += AfterLanding;
             Plane.OutAir += OutAir;
 

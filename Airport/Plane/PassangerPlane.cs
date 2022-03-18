@@ -22,6 +22,13 @@ namespace Airport.Plane
             Wheels = Properties.Resources.passwheels;
         }
 
+        public override void StartTakesOff()
+        {
+            NumberLabel.Location = new Point(70, 10);
+            SupportImage.Location = new Point(-17, 0);
+            base.StartTakesOff();
+        }
+
         public override void StartUnloading()
         {
             SupportImage.Image = Properties.Resources.passengerentry;
